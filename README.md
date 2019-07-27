@@ -1,9 +1,28 @@
 # Terraform provider for Open vSwitch
 
-This Terraform provider manages Opn vSwitch bridges and ports.
+This Terraform provider manages local Open vSwitch bridges and ports.
 
 
-# Installation from source
+## Sample usage
+
+From [examples/sample-bridge](./examples/sample-bridge/):
+
+```
+provider "openvswitch" {}
+
+resource "openvswitch_bridge" "sample_bridge" {
+  name = "testbr0"
+}
+
+resource "openvswitch_port" "sample_port" {
+  count     = 2
+  name      = "p${count.index}"
+  bridge_id = openvswitch_bridge.sample_bridge.id
+}
+```
+
+
+## Installation from source
 
 Requirements:
 

@@ -1,4 +1,4 @@
-TEST?=$$(go list ./... |grep -v 'vendor')
+TEST?=./...
 PKG_NAME=openvswitch
 
 default: build
@@ -7,9 +7,14 @@ build: fmtcheck
 	go install
 
 test: fmtcheck
-	go test -i $(TEST) || exit 1
-	echo $(TEST) | \
-		xargs -t -n4 go test $(TESTARGS) -timeout=30s -parallel=4
+	go test $(TEST) -parallel=4
+
+fmt:
+	@echo "==> Fixing source code with gofmt..."
+	gofmt -s -w ./$(PKG_NAME)
+
+fmtcheck:
+	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
 
 vet:
 	@echo "go vet ."
@@ -20,15 +25,16 @@ vet:
 		exit 1; \
 	fi
 
-fmtcheck:
-	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
-
 lint:
 	@echo "==> Checking source code against linters..."
 	@golangci-lint run ./$(PKG_NAME)
+	@tfproviderlint \
+		-c 1 \
+		./$(PKG_NAME)
 
 tools:
 	@echo "==> installing required tooling..."
-	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	GO111MODULE=on go install github.com/bflad/tfproviderlint/cmd/tfproviderlint
+	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
-.PHONY: build fmtcheck lint test tools vet
+.PHONY: build fmt fmtcheck lint test tools vet
