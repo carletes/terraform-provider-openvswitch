@@ -12,15 +12,17 @@ provider "openvswitch" {}
 
 resource "openvswitch_bridge" "sample_bridge" {
   name = "testbr0
-  ofversion = "OpenFlow13" //OpenFlow10, OpenFlow11, OpenFlow12, OpenFlow14, OpenFlow15
+  // Optional Parameters
+  // OpenFlow10, OpenFlow11, OpenFlow12, OpenFlow14, OpenFlow15
+  ofversion = "OpenFlow13"
 }
 
 resource "openvswitch_port" "sample_port" {
   count     = 2
   name      = "p${count.index}"
-  ofversion = "OpenFlow13" //OpenFlow10, OpenFlow11, OpenFlow12, OpenFlow14, OpenFlow15
+  ofversion = "OpenFlow13"
   bridge_id = openvswitch_bridge.sample_bridge.
-  // optional
+  // Optional Field
   action	= "up"
 }
 ```
