@@ -11,16 +11,23 @@ From [examples/sample-bridge](./examples/sample-bridge/):
 provider "openvswitch" {}
 
 resource "openvswitch_bridge" "sample_bridge" {
-  name = "testbr0"
+  name = "testbr0
+  ofversion = "OpenFlow13" //OpenFlow10, OpenFlow11, OpenFlow12, OpenFlow14, OpenFlow15
 }
 
 resource "openvswitch_port" "sample_port" {
   count     = 2
   name      = "p${count.index}"
-  bridge_id = openvswitch_bridge.sample_bridge.id
+  ofversion = "OpenFlow13" //OpenFlow10, OpenFlow11, OpenFlow12, OpenFlow14, OpenFlow15
+  bridge_id = openvswitch_bridge.sample_bridge.
+  // optional
+  action	= "up"
 }
 ```
 
+## Important notes
+- The ip, ovs-vsctl, ovs-ofctl commands all require sudo or root access
+- Error handling is currently broken
 
 ## Installation from source
 
@@ -28,6 +35,7 @@ Requirements:
 
 * Go 1.11.x or later
 * GNU Make
+* Terraform v0.12.* (This doesn't work on v0.13 yet)
 
 Clone this repo, and then do the fhe following:
 
