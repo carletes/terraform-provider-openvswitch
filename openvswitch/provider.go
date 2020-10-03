@@ -13,6 +13,7 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"openvswitch_bridge": resourceBridge(),
+			"openvswitch_port":   resourcePort(),
 		},
 
 		DataSourcesMap: map[string]*schema.Resource{},
