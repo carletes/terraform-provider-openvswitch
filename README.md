@@ -35,7 +35,7 @@ resource "openvswitch_port" "sample_port" {
 
 Requirements:
 
-* Go 1.11.x or later
+* Go 1.15.x or later
 * GNU Make
 * Terraform v0.12.* (This doesn't work on v0.13 yet)
 
