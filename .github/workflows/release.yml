@@ -45,30 +45,6 @@ jobs:
           # More details: https://github.com/actions/checkout/blob/b4626ce19ce1106186ddf9bb20e706842f11a7c3/adrs/0153-checkout-v2.md#persist-credentials
           persist-credentials: false
 
-  release-tag:
-    needs: [ changelog, major-version ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
-        with:
-          fetch-depth: 0
-          # Default input is the SHA that initially triggered the workflow. As we created a new commit in the previous job,
-          # to ensure we get the latest commit we use the ref for checkout: 'refs/heads/<branch_name>'
-          ref: ${{ github.ref }}
-          # Avoid persisting GITHUB_TOKEN credentials as they take priority over our service account PAT for `git push` operations
-          # More details: https://github.com/actions/checkout/blob/b4626ce19ce1106186ddf9bb20e706842f11a7c3/adrs/0153-checkout-v2.md#persist-credentials
-          persist-credentials: false
-
-      - name: Git push release tag
-        run: |
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "${{ env.CI_COMMIT_EMAIL }}"
-          
-          git tag "${{ inputs.versionNumber }}"
-          git tag -f "${{ needs.major-version.outputs.version }}" 
-          git push "https://${{ env.CI_COMMIT_AUTHOR }}:${{ secrets.TF_DEVEX_COMMIT_GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "${{ inputs.versionNumber }}"
-          git push "https://${{ env.CI_COMMIT_AUTHOR }}:${{ secrets.TF_DEVEX_COMMIT_GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" -f "${{ needs.major-version.outputs.version }}"
   terraform-provider-release:
     name: 'Terraform Provider Release'
     uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/community.yml@v2
@@ -78,7 +54,7 @@ jobs:
       setup-go-version-file: 'go.mod'
 
   release:
-    needs: [ changelog-version, changelog, release-tag ]
+    needs: [ changelog-version, changelog ]
     runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create GitHub release
