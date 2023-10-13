@@ -54,7 +54,7 @@ jobs:
       setup-go-version-file: 'go.mod'
 
   release:
-    needs: [ changelog-version, changelog ]
+    needs: [ changelog-version, changelog, major-version, terraform-provider-release ]
     runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create GitHub release
