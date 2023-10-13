@@ -1,4 +1,5 @@
 # Terraform provider for Open vSwitch
+[![release](https://github.com/trvon/terraform-provider-openvswitch/actions/workflows/release.yml/badge.svg)](https://github.com/trvon/terraform-provider-openvswitch/actions/workflows/release.yml)
 
 This Terraform provider manages local Open vSwitch bridges and ports.
 
