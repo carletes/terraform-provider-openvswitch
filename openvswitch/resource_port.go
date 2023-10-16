@@ -1,11 +1,12 @@
 package openvswitch
 
 import (
-	"github.com/digitalocean/go-openvswitch/ovs"
-	"github.com/hashicorp/terraform/helper/schema"
 	"log"
 	"os/exec"
 	"os/user"
+
+	"github.com/digitalocean/go-openvswitch/ovs"
+	"github.com/hashicorp/terraform/helper/schema"
 )
 
 // OVS Connection

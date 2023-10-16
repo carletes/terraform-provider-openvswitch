@@ -1,6 +1,5 @@
 
 name: release
-
 on:
   workflow_dispatch:
     inputs:
@@ -52,6 +51,7 @@ jobs:
       gpg-private-key: '${{ secrets.GPG_PRIVATE_KEY }}'
     with:
       setup-go-version-file: 'go.mod'
+    args: 
 
   release:
     needs: [ changelog-version, changelog, major-version, terraform-provider-release ]
