@@ -45,6 +45,7 @@ jobs:
           persist-credentials: false
 
   terraform-provider-release:
+    permissions: write-all
     name: 'Terraform Provider Release'
     uses: hashicorp/ghaction-terraform-provider-release/.github/workflows/community.yml@v2
     secrets:
